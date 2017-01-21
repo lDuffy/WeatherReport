@@ -8,6 +8,7 @@ import dagger.Component;
 import io.realm.RealmConfiguration;
 import liam.example.com.weatherreport.dagger.modules.AppModule;
 import liam.example.com.weatherreport.dagger.modules.RestModule;
+import liam.example.com.weatherreport.rest.RxUtils;
 import liam.example.com.weatherreport.rest.WeatherApi;
 
 /**
@@ -20,4 +21,5 @@ public interface AppComponent {
     Context context();
     WeatherApi api();
     RealmConfiguration realmConfig();
+    RxUtils rxUtils();
 }

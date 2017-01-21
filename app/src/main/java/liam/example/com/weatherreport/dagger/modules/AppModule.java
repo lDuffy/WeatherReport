@@ -12,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import dagger.Module;
 import dagger.Provides;
 import io.realm.RealmConfiguration;
+import liam.example.com.weatherreport.rest.RxUtils;
 
 /**
  * Dependancy injection module for providing application wide objects
@@ -51,6 +52,12 @@ public class AppModule {
         return new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
+    }
+
+    @Provides
+    @Singleton
+    RxUtils providesRxUtils(){
+        return new RxUtils();
     }
 
 
