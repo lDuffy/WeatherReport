@@ -1,10 +1,8 @@
 package liam.example.com.weatherreport.dao;
 
-/**
- * Created by lduf0001 on 18/01/2017.
- */
+import io.realm.RealmObject;
 
-public class City {
+public class City extends RealmObject {
 
     private String id;
 

@@ -1,7 +1,9 @@
 
 package liam.example.com.weatherreport.dao;
 
-public class Weather {
+import io.realm.RealmObject;
+
+public class Weather extends RealmObject {
 
     private int id;
     private String description;

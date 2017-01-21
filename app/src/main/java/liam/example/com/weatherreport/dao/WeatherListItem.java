@@ -1,15 +1,12 @@
 package liam.example.com.weatherreport.dao;
 
-import java.util.List;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
-/**
- * Created by lduf0001 on 19/01/2017.
- */
-
-public class WeatherListItem {
+public class WeatherListItem extends RealmObject {
 
     private Main main;
-    private List<Weather> weather;
+    private RealmList<Weather> weather;
 
     public Main getMain() {
         return main;

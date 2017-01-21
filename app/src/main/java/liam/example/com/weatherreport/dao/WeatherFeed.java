@@ -2,18 +2,21 @@ package liam.example.com.weatherreport.dao;
 
 import java.util.List;
 
-/**
- * Created by lduf0001 on 18/01/2017.
- */
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class WeatherFeed {
+public class WeatherFeed extends RealmObject {
     private String message;
+
+    @PrimaryKey
+    private long id = 1l;
 
     private String cnt;
 
     private String cod;
 
-    private List<WeatherListItem> list;
+    private RealmList<WeatherListItem> list;
 
     private City city;
 

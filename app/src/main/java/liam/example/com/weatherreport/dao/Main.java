@@ -1,6 +1,8 @@
 package liam.example.com.weatherreport.dao;
 
-public class Main {
+import io.realm.RealmObject;
+
+public class Main extends RealmObject {
 
     private static final double KELVIN_TO_CELSIUS_SUBTRACT = 273.15;
     private double temp;
