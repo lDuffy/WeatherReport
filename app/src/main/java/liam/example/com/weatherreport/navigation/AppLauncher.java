@@ -15,7 +15,6 @@ public class AppLauncher implements Launcher {
         context.getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 

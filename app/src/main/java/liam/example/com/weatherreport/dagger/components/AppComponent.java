@@ -5,6 +5,7 @@ import android.content.Context;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.realm.RealmConfiguration;
 import liam.example.com.weatherreport.dagger.modules.AppModule;
 import liam.example.com.weatherreport.dagger.modules.RestModule;
 import liam.example.com.weatherreport.rest.WeatherApi;
@@ -18,4 +19,5 @@ import liam.example.com.weatherreport.rest.WeatherApi;
 public interface AppComponent {
     Context context();
     WeatherApi api();
+    RealmConfiguration realmConfig();
 }

@@ -2,6 +2,7 @@ package liam.example.com.weatherreport.base;
 
 import android.app.Application;
 
+import io.realm.Realm;
 import liam.example.com.weatherreport.dagger.components.AppComponent;
 import liam.example.com.weatherreport.dagger.components.DaggerAppComponent;
 import liam.example.com.weatherreport.dagger.modules.AppModule;
@@ -16,6 +17,7 @@ public class WeatherReportApplication extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).restModule(new RestModule()).build();
+        Realm.init(this);
     }
 
     public AppComponent getAppComponent() {

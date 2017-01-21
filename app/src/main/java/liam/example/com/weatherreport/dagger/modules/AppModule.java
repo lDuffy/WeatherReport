@@ -11,6 +11,7 @@ import com.google.gson.GsonBuilder;
 
 import dagger.Module;
 import dagger.Provides;
+import io.realm.RealmConfiguration;
 
 /**
  * Dependancy injection module for providing application wide objects
@@ -43,6 +44,15 @@ public class AppModule {
         gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         return gsonBuilder.create();
     }
+
+    @Provides
+    @Singleton
+    RealmConfiguration providesRealmConfiguration() {
+        return new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+    }
+
 
 }
 
