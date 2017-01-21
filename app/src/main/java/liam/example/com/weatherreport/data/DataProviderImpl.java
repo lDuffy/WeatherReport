@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import com.fernandocejas.frodo.annotation.RxLogObservable;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import liam.example.com.weatherreport.dao.WeatherFeed;
 import liam.example.com.weatherreport.rest.RestServiceUtil;
 import liam.example.com.weatherreport.rest.WeatherApi;
@@ -14,19 +13,17 @@ import rx.schedulers.Schedulers;
 
 public class DataProviderImpl implements DataProvider {
 
-    RealmConfiguration configuration;
     WeatherApi weatherApi;
 
     @Inject
-    public DataProviderImpl(RealmConfiguration configuration, WeatherApi weatherApi) {
-        this.configuration = configuration;
+    public DataProviderImpl(WeatherApi weatherApi) {
         this.weatherApi = weatherApi;
     }
 
     private Observable<WeatherFeed> cachedFeed() {
         return Observable.create(subscriber -> {
 
-            Realm realm = Realm.getInstance(configuration);
+            Realm realm = Realm.getDefaultInstance();
             WeatherFeed result = realm.where(WeatherFeed.class).findFirst();
 
             if (null != result) {
@@ -63,7 +60,7 @@ public class DataProviderImpl implements DataProvider {
     }
 
     private void saveFeed(WeatherFeed weatherFeed) {
-        Realm realm = Realm.getInstance(configuration);
+        Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(weatherFeed);
         realm.commitTransaction();

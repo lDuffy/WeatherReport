@@ -4,11 +4,12 @@ import android.support.v7.app.AppCompatActivity;
 
 import dagger.Module;
 import dagger.Provides;
+import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.home.MainContract;
 import liam.example.com.weatherreport.home.MainPresenterImpl;
 import liam.example.com.weatherreport.navigation.AppLauncher;
 import liam.example.com.weatherreport.navigation.Launcher;
-import liam.example.com.weatherreport.rest.WeatherApi;
+import liam.example.com.weatherreport.rest.RxUtils;
 
 @Module
 public class ActivityModule {
@@ -20,13 +21,13 @@ public class ActivityModule {
     }
 
     @Provides
-    Launcher providesLauncher() {
+    public Launcher providesLauncher() {
         return new AppLauncher(activity);
     }
 
     @Provides
-    MainContract.MainPresenter providesMainPresenter(WeatherApi weatherApi){
-        return new MainPresenterImpl(weatherApi);
+    public MainContract.MainPresenter providesMainPresenter(DataProvider weatherApi, RxUtils rxUtils){
+        return new MainPresenterImpl(weatherApi, rxUtils);
     }
 
 }

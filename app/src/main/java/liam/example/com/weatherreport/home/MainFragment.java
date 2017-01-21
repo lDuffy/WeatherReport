@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import javax.inject.Inject;
 
@@ -14,7 +15,7 @@ import liam.example.com.weatherreport.base.InjectedFragment;
 import liam.example.com.weatherreport.dagger.components.ActivityComponent;
 import liam.example.com.weatherreport.dao.WeatherFeed;
 
-public class MainFragment extends InjectedFragment<ActivityComponent> implements MainContract.MainView{
+public class MainFragment extends InjectedFragment<ActivityComponent> implements MainContract.MainView {
 
     @Inject MainContract.MainPresenter presenter;
 
@@ -39,25 +40,24 @@ public class MainFragment extends InjectedFragment<ActivityComponent> implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
         presenter.onViewAttached(this);
         presenter.fetchDate();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.onViewAttached(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
+    public void onStop() {
+        super.onStop();
         presenter.onViewDetached();
     }
 
     @Override
     public void showToast(String error) {
-
+        Toast.makeText(getActivity(), error, Toast.LENGTH_LONG).show();
     }
 
     @Override

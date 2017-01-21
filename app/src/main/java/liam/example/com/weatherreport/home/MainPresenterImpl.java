@@ -1,48 +1,45 @@
 package liam.example.com.weatherreport.home;
 
-import android.util.Log;
 import android.view.View;
 
-import liam.example.com.weatherreport.dao.WeatherFeed;
-import liam.example.com.weatherreport.rest.WeatherApi;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import liam.example.com.weatherreport.data.DataProvider;
+import liam.example.com.weatherreport.rest.RxUtils;
+import rx.subjects.PublishSubject;
 
 public class MainPresenterImpl implements MainContract.MainPresenter {
+
+    final PublishSubject<Boolean> onDestroySubject;
+    final DataProvider weatherApi;
+    final RxUtils rxUtils;
     MainContract.MainView mainView;
 
-    final WeatherApi weatherApi;
-    public MainPresenterImpl(WeatherApi weatherApi){
+    public MainPresenterImpl(DataProvider weatherApi, RxUtils rxUtils) {
+        this.rxUtils = rxUtils;
         this.weatherApi = weatherApi;
+        onDestroySubject = PublishSubject.create();
     }
 
     @Override
     public void onViewAttached(MainContract.MainView mainView) {
-        this.mainView=mainView;
+        this.mainView = mainView;
     }
 
     @Override
     public void onViewDetached() {
-        mainView=null;
+        onDestroySubject.onNext(true);
+        mainView = null;
     }
 
     @Override
     public void fetchDate() {
-        weatherApi.list("Dublin")
-                .subscribeOn(Schedulers.io())
-                .observeOn(mainScheduler())
-                .subscribe(this::setResponse,
+        mainView.setProgressVisible(View.VISIBLE);
+        weatherApi.loadWeatherFeed()
+                .compose(rxUtils.newOnDestroyTransformer(onDestroySubject))
+                .compose(rxUtils.newIoToMainTransformer())
+                .subscribe(mainView::populateList,
                         throwable -> mainView.showToast(throwable.toString()),
                         () -> mainView.setProgressVisible(View.GONE));
-
     }
 
-    private void setResponse(WeatherFeed feed) {
-        Log.d("setResponse", "setResponse: ");
-    }
 
-    public Scheduler mainScheduler() {
-        return AndroidSchedulers.mainThread();
-    }
 }

@@ -17,9 +17,8 @@ public class RxUtils {
     }
 
     public PublishSubject<Boolean> onDestroySublect(){
-        return null;
+        return PublishSubject.create();
     }
-
 
     public <T> Observable.Transformer<T, T> newOnDestroyTransformer(PublishSubject<Boolean> onDestroySubject) {
         return source -> source.takeUntil(onDestroySubject);

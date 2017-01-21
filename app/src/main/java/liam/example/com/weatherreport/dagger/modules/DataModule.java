@@ -6,7 +6,10 @@ import dagger.Module;
 import dagger.Provides;
 import liam.example.com.weatherreport.BuildConfig;
 import liam.example.com.weatherreport.dagger.WeatherReport;
+import liam.example.com.weatherreport.data.DataProvider;
+import liam.example.com.weatherreport.data.DataProviderImpl;
 import liam.example.com.weatherreport.rest.RestServiceUtil;
+import liam.example.com.weatherreport.rest.RxUtils;
 import liam.example.com.weatherreport.rest.WeatherApi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -19,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Module for rest api code
  */
 @Module
-public class RestModule {
+public class DataModule {
 
     @Provides
     @Singleton
@@ -31,7 +34,7 @@ public class RestModule {
 
     @Provides
     @Singleton
-    OkHttpClient providesOkHttpClient(HttpLoggingInterceptor logging) {
+    public OkHttpClient providesOkHttpClient(HttpLoggingInterceptor logging) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         httpClient.addInterceptor(logging);
         httpClient.addInterceptor(chain -> {
@@ -56,8 +59,20 @@ public class RestModule {
 
     @Provides
     @Singleton
-    WeatherApi providesApi(@WeatherReport Retrofit restAdapter) {
+    public DataProvider providesLocalDataProvider( WeatherApi weatherApi) {
+        return new DataProviderImpl( weatherApi);
+    }
+
+    @Provides
+    @Singleton
+    public WeatherApi providesApi(@WeatherReport Retrofit restAdapter) {
         return restAdapter.create(WeatherApi.class);
+    }
+
+    @Provides
+    @Singleton
+    public RxUtils providesRxUtils() {
+        return new RxUtils();
     }
 
 }
