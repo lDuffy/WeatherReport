@@ -7,11 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import liam.example.com.weatherreport.R;
-import liam.example.com.weatherreport.dagger.components.ActivityComponent;
-import liam.example.com.weatherreport.base.InjectedFragment;
+import javax.inject.Inject;
 
-public class MainFragment extends InjectedFragment<ActivityComponent> {
+import liam.example.com.weatherreport.R;
+import liam.example.com.weatherreport.base.InjectedFragment;
+import liam.example.com.weatherreport.dagger.components.ActivityComponent;
+import liam.example.com.weatherreport.dao.WeatherFeed;
+
+public class MainFragment extends InjectedFragment<ActivityComponent> implements MainContract.MainView{
+
+    @Inject MainContract.MainPresenter presenter;
+
     public static Fragment newInstance() {
         return new MainFragment();
     }
@@ -28,5 +34,39 @@ public class MainFragment extends InjectedFragment<ActivityComponent> {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.onViewAttached(this);
+        presenter.fetchDate();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onViewAttached(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onViewDetached();
+    }
+
+    @Override
+    public void showToast(String error) {
+
+    }
+
+    @Override
+    public void populateList(WeatherFeed feed) {
+
+    }
+
+    @Override
+    public void setProgressVisible(int visibility) {
+
     }
 }
