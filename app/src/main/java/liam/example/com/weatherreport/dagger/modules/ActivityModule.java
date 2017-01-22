@@ -7,8 +7,6 @@ import dagger.Provides;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.home.MainContract;
 import liam.example.com.weatherreport.home.MainPresenterImpl;
-import liam.example.com.weatherreport.navigation.AppLauncher;
-import liam.example.com.weatherreport.navigation.Launcher;
 import liam.example.com.weatherreport.utils.RxUtils;
 
 @Module
@@ -18,11 +16,6 @@ public class ActivityModule {
 
     public ActivityModule(AppCompatActivity activity) {
         this.activity = activity;
-    }
-
-    @Provides
-    public Launcher providesLauncher() {
-        return new AppLauncher(activity);
     }
 
     @Provides

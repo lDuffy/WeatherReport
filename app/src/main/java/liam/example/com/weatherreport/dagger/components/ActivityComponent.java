@@ -9,6 +9,7 @@ import liam.example.com.weatherreport.home.MainActivity;
  * Activity component used in dependancy injection.
  */
 
+@FunctionalInterface
 @PerActivity
 @Component(modules = ActivityModule.class, dependencies = {AppComponent.class})
 public interface ActivityComponent {

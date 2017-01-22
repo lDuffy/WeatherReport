@@ -29,11 +29,11 @@ public class Day implements Comparable<Day>, Serializable {
         return items;
     }
 
-    public String getCurrentTempCelciusString(){
+    public CharSequence getCurrentTempCelciusString(){
         return items.get(0).getMain().getTempCelcius() + "\u00b0";
     }
 
-    public String getCurrentDescription(){
+    public CharSequence getCurrentDescription(){
         return items.get(0).getWeather().get(0).getDescription();
     }
 

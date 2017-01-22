@@ -13,6 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import butterknife.Bind;
@@ -24,11 +25,9 @@ import liam.example.com.weatherreport.dagger.components.ActivityComponent;
 import liam.example.com.weatherreport.dagger.components.DaggerActivityComponent;
 import liam.example.com.weatherreport.dagger.modules.ActivityModule;
 import liam.example.com.weatherreport.dao.Day;
-import liam.example.com.weatherreport.navigation.Launcher;
 
 public class MainActivity extends InjectedActivity<ActivityComponent> implements MainContract.MainView {
 
-    @Inject Launcher launcher;
     @Inject MainContract.MainPresenter presenter;
 
     @Bind(R.id.toolbar) Toolbar toolbar;
@@ -50,7 +49,7 @@ public class MainActivity extends InjectedActivity<ActivityComponent> implements
     private void setPagerAdapter(List<Day> items) {
         pageAdapter = new DayPageAdapter(getSupportFragmentManager(), items);
         viewPager.setAdapter(pageAdapter);
-        TitlePageIndicator titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
+        PageIndicator titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
         titleIndicator.setViewPager(viewPager);
     }
 
@@ -96,7 +95,7 @@ public class MainActivity extends InjectedActivity<ActivityComponent> implements
     }
 
     @OnClick(R.id.refresh)
-    public void submit(View view) {
+    public void submit() {
         presenter.fetchDate();
     }
 }

@@ -29,7 +29,7 @@ public class ListViewAdapter extends ArrayAdapter<WeatherListItem> {
         if (null == convertView) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
-        DateTime dateTime = new DateTime(Long.valueOf(weatherListItem.getDt() * 1000L), DateTimeZone.UTC);
+        DateTime dateTime = new DateTime(Long.valueOf(weatherListItem.getDt() * DateTimeUtils.SECOND), DateTimeZone.UTC);
         TextView time = (TextView) convertView.findViewById(R.id.time_of_day);
         TextView temp = (TextView) convertView.findViewById(R.id.temp);
         time.setText(DateTimeUtils.getTime(dateTime.toLocalDateTime()));

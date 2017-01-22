@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ public class AdapterItemFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         temp.setText(day.getCurrentTempCelciusString());
         description.setText(day.getCurrentDescription());
-        ListViewAdapter adapter = new ListViewAdapter(getContext(), day.getItems());
+        ListAdapter adapter = new ListViewAdapter(getContext(), day.getItems());
         listView.setAdapter(adapter);
     }
 

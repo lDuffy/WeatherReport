@@ -24,11 +24,13 @@ import liam.example.com.weatherreport.dao.WeatherListItem;
 public class DateTimeUtils {
 
 
+    public static final long SECOND = 1000L;
+
     @NonNull
     public static List<Day> getDaysFromFeed(WeatherFeed result) {
         List<Day> datesByDay = new ArrayList<>();
         for (WeatherListItem item : result.getList()) {
-            DateTime dateTime = new DateTime(Long.valueOf(item.getDt() * 1000L), DateTimeZone.UTC);
+            DateTime dateTime = new DateTime(Long.valueOf(item.getDt() * SECOND), DateTimeZone.UTC);
             Day dayDates = getDay(datesByDay, dateTime);
             if (null == dayDates) {
                 dayDates = new Day(dateTime);
@@ -50,7 +52,7 @@ public class DateTimeUtils {
         return null;
     }
 
-    public static String getDayFromInt(Integer key) {
+    public static CharSequence getDayFromInt(Integer key) {
         switch (key) {
             case 1:
                 return "Mon";
@@ -72,7 +74,7 @@ public class DateTimeUtils {
 
     }
 
-    public static String getTime(LocalDateTime date) {
+    public static CharSequence getTime(LocalDateTime date) {
         DateTimeFormatter fmt = DateTimeFormat.forPattern("h aa");
         return date.toString(fmt);
     }

@@ -1,7 +1,5 @@
 package liam.example.com.weatherreport.dao;
 
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -39,7 +37,7 @@ public class WeatherFeed extends RealmObject {
         return cod;
     }
 
-    public List<WeatherListItem> getList() {
+    public Iterable<WeatherListItem> getList() {
         return list;
     }
 
