@@ -1,7 +1,12 @@
 package liam.example.com.weatherreport.home;
 
+import java.util.List;
+
+import liam.example.com.weatherreport.dao.Day;
+import liam.example.com.weatherreport.dao.WeatherFeed;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.rest.RxUtils;
+import liam.example.com.weatherreport.utils.DateTimeUtils;
 import rx.subjects.PublishSubject;
 
 public class MainPresenterImpl implements MainContract.MainPresenter {
@@ -34,9 +39,14 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
         weatherApi.loadWeatherFeed()
                 .compose(rxUtils.newOnDestroyTransformer(onDestroySubject))
                 .compose(rxUtils.newIoToMainTransformer())
-                .subscribe(mainView::populateList,
+                .subscribe(this::sortResults,
                         this::setError,
                         () -> mainView.setProgressVisible(false));
+    }
+
+    void sortResults(WeatherFeed result) {
+        List<Day> datesByDay = DateTimeUtils.getDaysFromFeed(result);
+        mainView.populateList(datesByDay);
     }
 
     void setError(Throwable throwable) {

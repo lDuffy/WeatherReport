@@ -33,4 +33,16 @@
             android:visibility="gone"/>
 
     </android.support.v7.widget.Toolbar>
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/titles"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryDark"
+        app:selectedColor="@color/colorPrimaryDark"
+        android:layout_width="fill_parent" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 </LinearLayout>

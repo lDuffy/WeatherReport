@@ -12,4 +12,8 @@ public class WeatherListItem extends RealmObject {
     public Main getMain() {
         return main;
     }
+
+    public long getDt() {
+        return dt;
+    }
 }
