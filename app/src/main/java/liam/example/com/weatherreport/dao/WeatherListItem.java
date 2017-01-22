@@ -22,4 +22,8 @@ public class WeatherListItem extends RealmObject implements Serializable {
     public long getDt() {
         return dt;
     }
+
+    public String getTempInCelcius() {
+        return main.getTempCelcius() + "\u00b0";
+    }
 }

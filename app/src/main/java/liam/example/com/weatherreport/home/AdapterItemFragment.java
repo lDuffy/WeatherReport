@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class AdapterItemFragment extends Fragment {
     public static final String EXTRA_DAY = "EXTRA_DAY";
     @Bind(R.id.temp) TextView temp;
     @Bind(R.id.description) TextView description;
+    @Bind(R.id.list) ListView listView;
     private Day day;
 
     public static AdapterItemFragment newInstance(Serializable day) {
@@ -44,6 +46,8 @@ public class AdapterItemFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         temp.setText(day.getCurrentTempCelciusString());
         description.setText(day.getCurrentDescription());
+        ListViewAdapter adapter = new ListViewAdapter(getContext(), day.getItems());
+        listView.setAdapter(adapter);
     }
 
     @Override

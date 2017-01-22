@@ -8,7 +8,10 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.ReadableDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import liam.example.com.weatherreport.dao.Day;
 import liam.example.com.weatherreport.dao.WeatherFeed;
@@ -25,10 +28,10 @@ public class DateTimeUtils {
     public static List<Day> getDaysFromFeed(WeatherFeed result) {
         List<Day> datesByDay = new ArrayList<>();
         for (WeatherListItem item : result.getList()) {
-            DateTime someDate = new DateTime(Long.valueOf(item.getDt() * 1000L), DateTimeZone.UTC);
-            Day dayDates = getDay(datesByDay, someDate);
+            DateTime dateTime = new DateTime(Long.valueOf(item.getDt() * 1000L), DateTimeZone.UTC);
+            Day dayDates = getDay(datesByDay, dateTime);
             if (null == dayDates) {
-                dayDates = new Day(someDate);
+                dayDates = new Day(dateTime);
                 datesByDay.add(dayDates);
             }
             dayDates.add(item);
@@ -67,5 +70,10 @@ public class DateTimeUtils {
                 return "unknown";
         }
 
+    }
+
+    public static String getTime(LocalDateTime date) {
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("h aa");
+        return date.toString(fmt);
     }
 }
