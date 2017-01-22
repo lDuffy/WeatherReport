@@ -35,9 +35,13 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
                 .compose(rxUtils.newOnDestroyTransformer(onDestroySubject))
                 .compose(rxUtils.newIoToMainTransformer())
                 .subscribe(mainView::populateList,
-                        throwable -> mainView.showToast(throwable.toString()),
+                        this::setError,
                         () -> mainView.setProgressVisible(false));
     }
 
+    void setError(Throwable throwable) {
+        mainView.showToast(throwable.toString());
+        mainView.setProgressVisible(false);
+    }
 
 }
