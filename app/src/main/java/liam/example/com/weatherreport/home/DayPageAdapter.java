@@ -25,7 +25,6 @@ public class DayPageAdapter extends FragmentPagerAdapter {
     private void setupFragments() {
         for (Day day : days) {
             fragments.add(AdapterItemFragment.newInstance(day));
-
         }
     }
 

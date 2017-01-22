@@ -1,15 +1,21 @@
-
 package liam.example.com.weatherreport.dao;
 
-import java.io.Serializable;
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
 import io.realm.RealmObject;
+import io.realm.WeatherRealmProxy;
 
-public class Weather extends RealmObject implements Serializable {
+@Parcel(implementations = { WeatherRealmProxy.class }, value = Parcel.Serialization.FIELD, analyze = { Weather.class })
+public class Weather extends RealmObject {
 
-    private int id;
     private String description;
     private String icon;
+    private int id;
+
+    @ParcelConstructor
+    public Weather() {
+    }
 
     public int getId() {
         return id;

@@ -10,24 +10,24 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
+import org.parceler.Parcels;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import liam.example.com.weatherreport.R;
 import liam.example.com.weatherreport.dao.Day;
 
 public class AdapterItemFragment extends Fragment {
     public static final String EXTRA_DAY = "EXTRA_DAY";
-    @Bind(R.id.temp) TextView temp;
-    @Bind(R.id.description) TextView description;
-    @Bind(R.id.list) ListView listView;
+    @BindView(R.id.temp) TextView temp;
+    @BindView(R.id.description) TextView description;
+    @BindView(R.id.list) ListView listView;
     private Day day;
 
-    public static AdapterItemFragment newInstance(Serializable day) {
+    public static AdapterItemFragment newInstance(Day day) {
         AdapterItemFragment adapterItemFragment = new AdapterItemFragment();
         Bundle bundle = new Bundle(1);
-        bundle.putSerializable(EXTRA_DAY, day);
+        bundle.putParcelable(EXTRA_DAY, Parcels.wrap(day));
         adapterItemFragment.setArguments(bundle);
 
         return adapterItemFragment;
@@ -56,7 +56,8 @@ public class AdapterItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle.containsKey(EXTRA_DAY)) {
-            day = (Day) bundle.getSerializable(EXTRA_DAY);
+            day = Parcels.unwrap(bundle.getParcelable(EXTRA_DAY));
+
         }
     }
 }

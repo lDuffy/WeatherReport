@@ -28,24 +28,24 @@ public class DateTimeUtils {
 
     @NonNull
     public static List<Day> getDaysFromFeed(WeatherFeed result) {
-        List<Day> datesByDay = new ArrayList<>();
-        for (WeatherListItem item : result.getList()) {
-            DateTime dateTime = new DateTime(Long.valueOf(item.getDt() * SECOND), DateTimeZone.UTC);
-            Day dayDates = getDay(datesByDay, dateTime);
-            if (null == dayDates) {
-                dayDates = new Day(dateTime);
-                datesByDay.add(dayDates);
+        List<Day> dayList = new ArrayList<>();
+        for (WeatherListItem weatherListItem : result.getList()) {
+            DateTime dateTime = new DateTime(Long.valueOf(weatherListItem.getDt() * SECOND), DateTimeZone.UTC);
+            Day day = getDayFromList(dayList, dateTime);
+            if (null == day) {
+                day = new Day(dateTime);
+                dayList.add(day);
             }
-            dayDates.add(item);
+            day.add(weatherListItem);
 
         }
-        Collections.sort(datesByDay);
-        return datesByDay;
+        Collections.sort(dayList);
+        return dayList;
     }
 
-    static Day getDay(Iterable<Day> datesByDay, ReadableDateTime someDate) {
-        for (Day day : datesByDay) {
-            if (day.getDate().getDayOfWeek() == someDate.getDayOfWeek()) {
+    static Day getDayFromList(Iterable<Day> dayList, ReadableDateTime dateTime) {
+        for (Day day : dayList) {
+            if (day.getDate().getDayOfWeek() == dateTime.getDayOfWeek()) {
                 return day;
             }
         }

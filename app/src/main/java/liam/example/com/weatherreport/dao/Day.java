@@ -1,18 +1,28 @@
 package liam.example.com.weatherreport.dao;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
-public class Day implements Comparable<Day>, Serializable {
-    private List<WeatherListItem> items;
-    private DateTime date;
+import io.realm.annotations.PrimaryKey;
+
+@Parcel
+public class Day implements Comparable<Day> {
+
+    @PrimaryKey
+    public DateTime date;
+    public List<WeatherListItem> items;
 
     public Day(DateTime date) {
         this.date = date;
         items = new ArrayList<>();
+    }
+
+    @ParcelConstructor
+    public Day() {
     }
 
     public void add(WeatherListItem item) {
@@ -29,11 +39,11 @@ public class Day implements Comparable<Day>, Serializable {
         return items;
     }
 
-    public CharSequence getCurrentTempCelciusString(){
+    public CharSequence getCurrentTempCelciusString() {
         return items.get(0).getMain().getTempCelcius() + "\u00b0";
     }
 
-    public CharSequence getCurrentDescription(){
+    public CharSequence getCurrentDescription() {
         return items.get(0).getWeather().get(0).getDescription();
     }
 

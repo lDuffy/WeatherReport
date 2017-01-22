@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import com.viewpagerindicator.PageIndicator;
 import com.viewpagerindicator.TitlePageIndicator;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import liam.example.com.weatherreport.R;
@@ -30,10 +30,10 @@ public class MainActivity extends InjectedActivity<ActivityComponent> implements
 
     @Inject MainContract.MainPresenter presenter;
 
-    @Bind(R.id.toolbar) Toolbar toolbar;
-    @Bind(R.id.progress) ProgressBar progressBar;
-    @Bind(R.id.refresh) ImageView refresh;
-    @Bind(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.progress) ProgressBar progressBar;
+    @BindView(R.id.refresh) ImageView refresh;
+    @BindView(R.id.viewpager) ViewPager viewPager;
     DayPageAdapter pageAdapter;
 
     @Override
@@ -84,8 +84,6 @@ public class MainActivity extends InjectedActivity<ActivityComponent> implements
         Log.d("populateList", "populateList: ");
         setPagerAdapter(datesByDay);
     }
-
-
 
     @Override
     public void setProgressVisible(boolean visibility) {

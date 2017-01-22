@@ -76,7 +76,6 @@ public class MainPresenterTest {
         envokeValidResponsefromDataRequest();
         presenter.fetchDate();
         verify(mainView).setProgressVisible(true);
-        verify(mainView).setProgressVisible(false);
 
     }
 
