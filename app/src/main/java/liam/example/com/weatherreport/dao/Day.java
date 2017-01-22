@@ -1,11 +1,12 @@
 package liam.example.com.weatherreport.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
 
-public class Day implements Comparable<Day> {
+public class Day implements Comparable<Day>, Serializable {
     DateTime date;
     List<WeatherListItem> items;
 

@@ -34,7 +34,7 @@ public class RestServiceUtil {
     public static Func1<Observable<? extends Throwable>, Observable<?>> defaultRetry() {
         return retry -> Observable.zip(Observable.range(1, RETRY_COUNT + 1), retry, (retryCount, error) -> {
             if (RETRY_COUNT >= retryCount) {
-                return Observable.timer(2, TimeUnit.SECONDS);
+                return Observable.timer(RETRY_INTERVAL, TimeUnit.SECONDS);
             }
             return Observable.error(error);
         }).flatMap(observable -> observable);

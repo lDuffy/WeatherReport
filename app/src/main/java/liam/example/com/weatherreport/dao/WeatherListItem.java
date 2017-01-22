@@ -1,9 +1,11 @@
 package liam.example.com.weatherreport.dao;
 
+import java.io.Serializable;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-public class WeatherListItem extends RealmObject {
+public class WeatherListItem extends RealmObject implements Serializable {
 
     private Main main;
     private RealmList<Weather> weather;
