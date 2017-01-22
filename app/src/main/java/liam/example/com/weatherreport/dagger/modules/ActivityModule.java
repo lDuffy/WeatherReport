@@ -9,7 +9,7 @@ import liam.example.com.weatherreport.home.MainContract;
 import liam.example.com.weatherreport.home.MainPresenterImpl;
 import liam.example.com.weatherreport.navigation.AppLauncher;
 import liam.example.com.weatherreport.navigation.Launcher;
-import liam.example.com.weatherreport.rest.RxUtils;
+import liam.example.com.weatherreport.utils.RxUtils;
 
 @Module
 public class ActivityModule {

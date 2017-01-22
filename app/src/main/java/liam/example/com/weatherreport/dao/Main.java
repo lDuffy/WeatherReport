@@ -1,5 +1,7 @@
 package liam.example.com.weatherreport.dao;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 
 public class Main extends RealmObject {
@@ -8,7 +10,9 @@ public class Main extends RealmObject {
     private double temp;
     private double pressure;
     private double humidity;
+    @SerializedName("temp_min")
     private double tempMin;
+    @SerializedName("temp_max")
     private double tempMax;
 
     public double getTemp() {

@@ -8,7 +8,7 @@ import dagger.Component;
 import liam.example.com.weatherreport.dagger.modules.AppModule;
 import liam.example.com.weatherreport.dagger.modules.DataModule;
 import liam.example.com.weatherreport.data.DataProvider;
-import liam.example.com.weatherreport.rest.RxUtils;
+import liam.example.com.weatherreport.utils.RxUtils;
 
 /**
  * Component for application global objects

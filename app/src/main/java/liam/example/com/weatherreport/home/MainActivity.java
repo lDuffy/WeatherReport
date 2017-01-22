@@ -3,6 +3,7 @@ package liam.example.com.weatherreport.home;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -81,6 +82,7 @@ public class MainActivity extends InjectedActivity<ActivityComponent> implements
 
     @Override
     public void populateList(List<Day> datesByDay) {
+        Log.d("populateList", "populateList: ");
         setPagerAdapter(datesByDay);
     }
 

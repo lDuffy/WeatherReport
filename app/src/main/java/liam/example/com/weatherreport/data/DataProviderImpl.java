@@ -6,7 +6,7 @@ import com.fernandocejas.frodo.annotation.RxLogObservable;
 
 import io.realm.Realm;
 import liam.example.com.weatherreport.dao.WeatherFeed;
-import liam.example.com.weatherreport.rest.RestServiceUtil;
+import liam.example.com.weatherreport.utils.RestServiceUtil;
 import liam.example.com.weatherreport.rest.WeatherApi;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -39,7 +39,7 @@ public class DataProviderImpl implements DataProvider {
     }
 
     private Observable<WeatherFeed> remoteFeed() {
-        return weatherApi.list("Dublin").retryWhen(RestServiceUtil.defaultRetry());
+        return weatherApi.list("Dublin,IE").retryWhen(RestServiceUtil.defaultRetry());
     }
 
     /**

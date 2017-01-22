@@ -32,8 +32,8 @@ public class ListViewAdapter extends ArrayAdapter<WeatherListItem> {
         DateTime dateTime = new DateTime(Long.valueOf(weatherListItem.getDt() * 1000L), DateTimeZone.UTC);
         TextView time = (TextView) convertView.findViewById(R.id.time_of_day);
         TextView temp = (TextView) convertView.findViewById(R.id.temp);
-        time.setText( weatherListItem.getTempInCelcius());
-        temp.setText(DateTimeUtils.getTime(dateTime.toLocalDateTime()));
+        time.setText(DateTimeUtils.getTime(dateTime.toLocalDateTime()));
+        temp.setText(weatherListItem.getTempInCelcius());
         return convertView;
     }
 }

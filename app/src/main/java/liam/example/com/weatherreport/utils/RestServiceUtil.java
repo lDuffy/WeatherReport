@@ -1,4 +1,4 @@
-package liam.example.com.weatherreport.rest;
+package liam.example.com.weatherreport.utils;
 
 import java.util.concurrent.TimeUnit;
 

@@ -7,19 +7,19 @@
               android:padding="15dp">
 
     <TextView
-        android:id="@+id/temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingEnd="20dp"
-        android:textSize="15sp"
-        tools:text="4"/>
-
-    <TextView
         android:id="@+id/time_of_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingEnd="20dp"
         android:textSize="15sp"
         tools:text="3:00pm"/>
+
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="20dp"
+        android:textSize="15sp"
+        tools:text="4"/>
 
 </LinearLayout>
