@@ -1,13 +1,11 @@
 
 ## Synopsis
 
-This is a test application that pulls a 5 day weather feed from the open weahter api: https://openweathermap.org/api/
+Test application that pulls a 5 day weather feed from the open weahter api: https://openweathermap.org/api/.
 
-Feed is saved locally to a realm database for offline access. When the user opens the app after the feed has been saved
+Feed is saved locally to a realm database for offline access. When the user opens the app after the feed has been saved the cached feed will load in while while waiting for the network response.
 
-the cached feed will load in while while waiting for the network response. Added a default retry policy of 3 attempts on the
-
-newrork call with exponential backoff using RxJava. Also added a refresh button in the toolbar.
+Added a default retry policy of 3 attempts on the newrork call with exponential backoff using RxJava. Also added a refresh button in the toolbar.
 
 App consists of a MainActivity with a ViewPager and ViewPageIndicator. ViewPager contains a screen for every day of the forecast.
 
