@@ -11,6 +11,13 @@ public class WeatherListItem extends RealmObject implements Serializable {
     private RealmList<Weather> weather;
     private long dt;
 
+    public WeatherListItem() {
+    }
+
+    public WeatherListItem(long dt) {
+        this.dt = dt;
+    }
+
     public Main getMain() {
         return main;
     }
@@ -24,6 +31,6 @@ public class WeatherListItem extends RealmObject implements Serializable {
     }
 
     public String getTempInCelcius() {
-        return ((int)main.getTempMax() - 273F) + "\u00b0" + "/" + ((int)main.getTempMin() - 273F);
+        return ((int) main.getTempMax() - 273F) + "\u00b0" + "/" + ((int) main.getTempMin() - 273F);
     }
 }

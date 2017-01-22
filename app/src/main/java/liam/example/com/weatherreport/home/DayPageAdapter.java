@@ -13,9 +13,8 @@ import liam.example.com.weatherreport.utils.DateTimeUtils;
 
 public class DayPageAdapter extends FragmentPagerAdapter {
 
-    private List<Day> days;
     private List<Fragment> fragments = new ArrayList<>();
-
+    private List<Day> days;
 
     public DayPageAdapter(FragmentManager fm, List<Day> days) {
         super(fm);

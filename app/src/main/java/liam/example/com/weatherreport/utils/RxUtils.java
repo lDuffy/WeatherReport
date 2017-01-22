@@ -16,10 +16,6 @@ public class RxUtils {
         return AndroidSchedulers.mainThread();
     }
 
-    public PublishSubject<Boolean> onDestroySublect(){
-        return PublishSubject.create();
-    }
-
     public <T> Observable.Transformer<T, T> newOnDestroyTransformer(PublishSubject<Boolean> onDestroySubject) {
         return source -> source.takeUntil(onDestroySubject);
     }

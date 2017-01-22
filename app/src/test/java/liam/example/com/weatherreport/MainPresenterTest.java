@@ -1,7 +1,6 @@
 package liam.example.com.weatherreport;
 
 import android.app.Application;
-import android.view.View;
 
 import javax.inject.Inject;
 
@@ -23,7 +22,8 @@ import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.home.MainContract;
 import rx.Observable;
 
-import static org.mockito.Matchers.eq;
+import static liam.example.com.weatherreport.utils.TestUtils.getTestWeatherFeed;
+import static org.mockito.Matchers.anyList;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -31,18 +31,18 @@ import static org.mockito.Mockito.verify;
 public class MainPresenterTest {
 
 
-    @Mock Application app;
+    @Mock Application application;
     @Mock MainContract.MainView mainView;
     @Mock Observable.Transformer transformer;
 
-    @Inject DataProvider api;
+    @Inject DataProvider dataProvider;
     @Inject MainContract.MainPresenter presenter;
 
 
     @Before
     public void setUp() throws Exception {
 
-        AppComponent component = DaggerAppComponent.builder().appModule(new AppModule(app)).dataModule(new TestDataModule()).build();
+        AppComponent component = DaggerAppComponent.builder().appModule(new AppModule(application)).dataModule(new TestDataModule()).build();
         TestActivityComponent activityComponent = DaggerTestActivityComponent.builder().testActivityModule(new TestActivityModule(null)).appComponent(component).build();
         activityComponent.inject(this);
         presenter.onViewAttached(mainView);
@@ -51,21 +51,32 @@ public class MainPresenterTest {
 
     @Test
     public void testLoadWeatherFeedPopulateList() {
-        WeatherFeed testFeed = new WeatherFeed();
-        Observable<WeatherFeed> ob = Observable.just(testFeed);
-        doReturn(ob).when(api).loadWeatherFeed();
+        envokeValidResponsefromDataRequest();
         presenter.fetchDate();
-        verify(mainView).populateList(eq(testFeed));
-        verify(mainView).setProgressVisible(View.GONE);
+        verify(mainView).populateList(anyList());
 
+    }
+
+    private void envokeValidResponsefromDataRequest() {
+        WeatherFeed testFeed = getTestWeatherFeed();
+        Observable<WeatherFeed> testObservable = Observable.just(testFeed);
+        doReturn(testObservable).when(dataProvider).loadWeatherFeed();
     }
 
     @Test
     public void testLoadWeatherFeedError() {
-        doReturn(Observable.error(new Throwable())).when(api).loadWeatherFeed();
+        doReturn(Observable.error(new Throwable())).when(dataProvider).loadWeatherFeed();
         presenter.fetchDate();
-
         verify(mainView).showToast("java.lang.Throwable");
+
+    }
+
+    @Test
+    public void testLoadWeatherProgress() {
+        envokeValidResponsefromDataRequest();
+        presenter.fetchDate();
+        verify(mainView).setProgressVisible(true);
+        verify(mainView).setProgressVisible(false);
 
     }
 

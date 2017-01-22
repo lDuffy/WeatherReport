@@ -20,6 +20,13 @@ public class WeatherFeed extends RealmObject {
 
     private City city;
 
+    public WeatherFeed(RealmList<WeatherListItem> list) {
+        this.list = list;
+    }
+
+    public WeatherFeed() {
+    }
+
     public String getMessage() {
         return message;
     }
