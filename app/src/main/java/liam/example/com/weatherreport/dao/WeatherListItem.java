@@ -15,6 +15,10 @@ public class WeatherListItem extends RealmObject implements Serializable {
         return main;
     }
 
+    public RealmList<Weather> getWeather(){
+        return weather;
+    }
+
     public long getDt() {
         return dt;
     }

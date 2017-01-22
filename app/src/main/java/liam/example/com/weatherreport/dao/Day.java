@@ -7,8 +7,8 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 public class Day implements Comparable<Day>, Serializable {
-    DateTime date;
-    List<WeatherListItem> items;
+    private List<WeatherListItem> items;
+    private DateTime date;
 
     public Day(DateTime date) {
         this.date = date;
@@ -23,6 +23,18 @@ public class Day implements Comparable<Day>, Serializable {
     public int compareTo(Day day) {
         return date.compareTo(day.date);
 
+    }
+
+    public List<WeatherListItem> getItems() {
+        return items;
+    }
+
+    public String getCurrentTempCelciusString(){
+        return items.get(0).getMain().getTempCelcius() + "\u00b0";
+    }
+
+    public String getCurrentDescription(){
+        return items.get(0).getWeather().get(0).getDescription();
     }
 
     public DateTime getDate() {

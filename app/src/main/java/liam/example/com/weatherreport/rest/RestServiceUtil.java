@@ -12,7 +12,7 @@ import rx.functions.Func1;
 public class RestServiceUtil {
 
     private static final Integer RETRY_COUNT = 3;
-    private static final Integer RETRY_INTERVAL = 2;
+    private static final Integer EXPONENT_POWER = 2;
 
     public static Request getRequestWithApiKey(Interceptor.Chain chain) {
         Request original = chain.request();
@@ -26,7 +26,7 @@ public class RestServiceUtil {
     }
 
     /**
-     * Retry policy for network requests used in conjuction with retryWhen() operator.
+     * Exponential backoff policy for network requests used in conjuction with retryWhen() operator.
      * @return source observable that resubscribes to network event after Math.pow(EXPONENT_POWER, n) seconds.
      * if retry count expires, source observable calls onError.
      */
@@ -34,7 +34,7 @@ public class RestServiceUtil {
     public static Func1<Observable<? extends Throwable>, Observable<?>> defaultRetry() {
         return retry -> Observable.zip(Observable.range(1, RETRY_COUNT + 1), retry, (retryCount, error) -> {
             if (RETRY_COUNT >= retryCount) {
-                return Observable.timer(RETRY_INTERVAL, TimeUnit.SECONDS);
+                return Observable.timer((long) Math.pow(EXPONENT_POWER, retryCount), TimeUnit.SECONDS);
             }
             return Observable.error(error);
         }).flatMap(observable -> observable);
