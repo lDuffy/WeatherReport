@@ -32,6 +32,8 @@ Archecture Is mainly MVP.
 
 Clone project. Open in Android Studio. build.
 
+Note: also added a debug-build.apk in app/apk dir.
+
 ## API Reference
 
 * 5 day weather api : Pulls a 5 day forecast (Dublin) includes weather data every 3 hour.
