@@ -11,6 +11,9 @@ App consists of a MainActivity with a ViewPager and ViewPageIndicator. ViewPager
 
 Archecture Is mainly MVP.
 
+![screenshot_20170122-232542](https://cloud.githubusercontent.com/assets/4758595/22187230/676af0ce-e0fa-11e6-91bb-813fec877901.png)
+
+
 
 ## Libraries
 
