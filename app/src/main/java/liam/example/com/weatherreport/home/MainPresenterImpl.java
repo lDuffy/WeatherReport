@@ -5,8 +5,8 @@ import java.util.List;
 import liam.example.com.weatherreport.dao.Day;
 import liam.example.com.weatherreport.dao.WeatherFeed;
 import liam.example.com.weatherreport.data.DataProvider;
-import liam.example.com.weatherreport.utils.RxUtils;
 import liam.example.com.weatherreport.utils.DateTimeUtils;
+import liam.example.com.weatherreport.utils.RxUtils;
 import rx.subjects.PublishSubject;
 
 public class MainPresenterImpl implements MainContract.MainPresenter {
@@ -46,12 +46,17 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
 
     void sortResultsAndPopulateList(WeatherFeed result) {
         List<Day> datesByDay = DateTimeUtils.getDaysFromFeed(result);
-        mainView.populateList(datesByDay);
+        if (null != mainView) {
+            mainView.populateList(datesByDay);
+
+        }
     }
 
     void setError(Throwable throwable) {
-        mainView.showToast(throwable.toString());
-        mainView.setProgressVisible(false);
+        if (null != mainView) {
+            mainView.showToast(throwable.toString());
+            mainView.setProgressVisible(false);
+        }
     }
 
 }
