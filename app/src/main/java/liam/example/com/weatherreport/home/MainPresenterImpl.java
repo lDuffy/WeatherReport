@@ -1,7 +1,5 @@
 package liam.example.com.weatherreport.home;
 
-import android.view.View;
-
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.rest.RxUtils;
 import rx.subjects.PublishSubject;
@@ -32,13 +30,13 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
 
     @Override
     public void fetchDate() {
-        mainView.setProgressVisible(View.VISIBLE);
+        mainView.setProgressVisible(true);
         weatherApi.loadWeatherFeed()
                 .compose(rxUtils.newOnDestroyTransformer(onDestroySubject))
                 .compose(rxUtils.newIoToMainTransformer())
                 .subscribe(mainView::populateList,
                         throwable -> mainView.showToast(throwable.toString()),
-                        () -> mainView.setProgressVisible(View.GONE));
+                        () -> mainView.setProgressVisible(false));
     }
 
 

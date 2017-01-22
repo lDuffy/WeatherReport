@@ -7,6 +7,7 @@ public class WeatherListItem extends RealmObject {
 
     private Main main;
     private RealmList<Weather> weather;
+    private long dt;
 
     public Main getMain() {
         return main;

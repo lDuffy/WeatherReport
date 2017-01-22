@@ -23,6 +23,7 @@ import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.home.MainContract;
 import rx.Observable;
 
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 
@@ -54,7 +55,7 @@ public class MainPresenterTest {
         Observable<WeatherFeed> ob = Observable.just(testFeed);
         doReturn(ob).when(api).loadWeatherFeed();
         presenter.fetchDate();
-        verify(mainView).populateList(testFeed);
+        verify(mainView).populateList(eq(testFeed));
         verify(mainView).setProgressVisible(View.GONE);
 
     }

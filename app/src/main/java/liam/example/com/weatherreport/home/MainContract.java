@@ -11,7 +11,7 @@ public interface MainContract {
     interface MainView {
         void showToast(String error);
         void populateList(WeatherFeed feed);
-        void setProgressVisible(int visibility);
+        void setProgressVisible(boolean visibility);
     }
 
     interface MainPresenter {

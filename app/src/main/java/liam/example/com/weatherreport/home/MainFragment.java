@@ -66,7 +66,8 @@ public class MainFragment extends InjectedFragment<ActivityComponent> implements
     }
 
     @Override
-    public void setProgressVisible(int visibility) {
+    public void setProgressVisible(final boolean visibility) {
 
     }
+
 }
