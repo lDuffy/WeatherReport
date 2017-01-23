@@ -41,5 +41,8 @@ Note: also added a debug-build.apk in app/apk dir.
 
 ## Tests
 
-Uses Mockito and Junit4 for unit testing. Creating test dagger components/modules to mock injected code.
+Uses Mockito and Junit4 for unit testing. Created test dagger components/modules to mock injected code.
+
+## Further Work
+Given more time would like to include kotlin to reduce boiler plate code. I would Like to incluse Espresso for UI tests. I would also like integrate geo location to pull the feed based on the users location. 
 
