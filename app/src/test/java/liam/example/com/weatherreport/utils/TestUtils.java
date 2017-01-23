@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import io.realm.RealmList;
 import liam.example.com.weatherreport.dao.WeatherFeed;
 import liam.example.com.weatherreport.dao.WeatherListItem;
+import rx.Observable;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 public class TestUtils {
 
@@ -17,5 +20,13 @@ public class TestUtils {
         }
 
         return new WeatherFeed(items);
+    }
+
+    public static <T> Observable.Transformer<T, T> newIoToMainTransformer() {
+        return source -> source.subscribeOn(Schedulers.immediate()).observeOn(Schedulers.immediate());
+    }
+
+    public static <T> Observable.Transformer<T, T> newOnDestroyTransformer(PublishSubject<Boolean> onDestroySubject) {
+        return source -> source.takeUntil(onDestroySubject);
     }
 }

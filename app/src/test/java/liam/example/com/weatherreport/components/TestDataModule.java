@@ -6,6 +6,7 @@ import liam.example.com.weatherreport.dagger.WeatherReport;
 import liam.example.com.weatherreport.dagger.modules.DataModule;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.rest.WeatherApi;
+import liam.example.com.weatherreport.utils.RxUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -28,6 +29,11 @@ public class TestDataModule extends DataModule {
     @Override
     public OkHttpClient providesOkHttpClient(HttpLoggingInterceptor logging) {
         return Mockito.mock(OkHttpClient.class);
+    }
+
+    @Override
+    public RxUtils providesRxUtils() {
+        return Mockito.mock(RxUtils.class);
     }
 
 }
