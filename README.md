@@ -18,9 +18,7 @@ Archecture Is mainly MVP.
 ## Libraries
 
 * Retrofit 2 : networking.
-* Realm : database.
 * RxJava : reactive programming.
-* Frodo : Rxjava debugger.
 * Mockito/Junit : testing.
 * ButterKnife : view injection.
 * Dagger2 : dependency injection.
@@ -37,12 +35,12 @@ Note: also added a debug-build.apk in app/apk dir.
 
 ## API Reference
 
-* 5 day weather api : Pulls a 5 day forecast (Dublin) includes weather data every 3 hour.
+* 5 day weather api : Pulls a 5 day forecast based on users location includes weather data every 3 hour.
 
 ## Tests
 
 Uses Mockito and Junit4 for unit testing. Created test dagger components/modules to mock injected code.
 
 ## Further Work
-Given more time would like to include kotlin to reduce boiler plate code. I would Like to incluse Espresso for UI tests. I would also like integrate geo location to pull the feed based on the users location. 
+Given more time would like to include kotlin to reduce boiler plate code. I would Like to incluse Espresso for UI tests.
 
