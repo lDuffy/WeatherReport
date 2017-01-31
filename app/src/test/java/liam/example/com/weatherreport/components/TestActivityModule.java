@@ -1,13 +1,12 @@
 package liam.example.com.weatherreport.components;
 
-import android.support.v7.app.AppCompatActivity;
-
 import dagger.Module;
 import liam.example.com.weatherreport.dagger.modules.ActivityModule;
+import liam.example.com.weatherreport.home.MainActivity;
 
 @Module
 public class TestActivityModule extends ActivityModule {
-    public TestActivityModule(AppCompatActivity activity) {
+    public TestActivityModule(MainActivity activity) {
         super(activity);
     }
 }

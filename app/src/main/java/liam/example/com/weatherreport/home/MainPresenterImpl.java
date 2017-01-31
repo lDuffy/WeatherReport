@@ -1,5 +1,7 @@
 package liam.example.com.weatherreport.home;
 
+import android.location.Location;
+
 import java.util.List;
 
 import liam.example.com.weatherreport.dao.Day;
@@ -34,9 +36,9 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
     }
 
     @Override
-    public void fetchDate() {
+    public void fetchDate(Location location ) {
         mainView.setProgressVisible(true);
-        weatherApi.loadWeatherFeed()
+        weatherApi.loadWeatherFeed(location)
                 .compose(rxUtils.newOnDestroyTransformer(onDestroySubject))
                 .compose(rxUtils.newIoToMainTransformer())
                 .subscribe(this::sortResultsAndPopulateList,
@@ -45,10 +47,12 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
     }
 
     void sortResultsAndPopulateList(WeatherFeed result) {
-        List<Day> datesByDay = DateTimeUtils.getDaysFromFeed(result);
-        if (null != mainView) {
-            mainView.populateList(datesByDay);
+        if (null != result) {
+            List<Day> datesByDay = DateTimeUtils.getDaysFromFeed(result);
+            if (null != mainView) {
+                mainView.populateList(datesByDay);
 
+            }
         }
     }
 

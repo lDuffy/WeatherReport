@@ -1,28 +1,20 @@
 package liam.example.com.weatherreport.dao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
-import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
 
-import io.realm.annotations.PrimaryKey;
 
-@Parcel
-public class Day implements Comparable<Day> {
+public class Day implements Comparable<Day>, Serializable {
 
-    @PrimaryKey
     public DateTime date;
     public List<WeatherListItem> items;
 
     public Day(DateTime date) {
         this.date = date;
         items = new ArrayList<>();
-    }
-
-    @ParcelConstructor
-    public Day() {
     }
 
     public void add(WeatherListItem item) {

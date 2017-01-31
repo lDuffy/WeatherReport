@@ -10,7 +10,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +26,7 @@ public class AdapterItemFragment extends Fragment {
     public static AdapterItemFragment newInstance(Day day) {
         AdapterItemFragment adapterItemFragment = new AdapterItemFragment();
         Bundle bundle = new Bundle(1);
-        bundle.putParcelable(EXTRA_DAY, Parcels.wrap(day));
+        bundle.putSerializable(EXTRA_DAY, day);
         adapterItemFragment.setArguments(bundle);
 
         return adapterItemFragment;
@@ -56,7 +55,7 @@ public class AdapterItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle.containsKey(EXTRA_DAY)) {
-            day = Parcels.unwrap(bundle.getParcelable(EXTRA_DAY));
+            day = (Day)bundle.getSerializable(EXTRA_DAY);
 
         }
     }

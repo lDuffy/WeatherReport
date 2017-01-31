@@ -1,5 +1,7 @@
 package liam.example.com.weatherreport.home;
 
+import android.location.Location;
+
 import java.util.List;
 
 import liam.example.com.weatherreport.dao.Day;
@@ -19,7 +21,7 @@ public interface MainContract {
     interface MainPresenter {
         void onViewAttached(MainView view);
         void onViewDetached();
-        void fetchDate();
+        void fetchDate(Location location);
 
     }
 

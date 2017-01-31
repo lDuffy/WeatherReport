@@ -1,16 +1,8 @@
 package liam.example.com.weatherreport.dao;
 
-import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
-
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.MainRealmProxy;
-import io.realm.RealmObject;
-
-
-@Parcel(implementations = { MainRealmProxy.class }, value = Parcel.Serialization.FIELD, analyze = { Main.class })
-public class Main extends RealmObject {
+public class Main{
 
     public static final double KELVIN_TO_CELSIUS_SUBTRACT = 273.15;
     public double pressure;
@@ -20,10 +12,6 @@ public class Main extends RealmObject {
     public double tempMin;
     @SerializedName("temp_max")
     public double tempMax;
-
-    @ParcelConstructor
-    public Main() {
-    }
 
     public double getTemp() {
         return temp;

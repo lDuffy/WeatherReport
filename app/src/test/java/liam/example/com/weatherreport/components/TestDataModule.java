@@ -1,14 +1,16 @@
 package liam.example.com.weatherreport.components;
 
+import android.app.Application;
+
 import org.mockito.Mockito;
+
+import com.google.gson.Gson;
 
 import liam.example.com.weatherreport.dagger.WeatherReport;
 import liam.example.com.weatherreport.dagger.modules.DataModule;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.rest.WeatherApi;
 import liam.example.com.weatherreport.utils.RxUtils;
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 
 /*
@@ -22,13 +24,8 @@ public class TestDataModule extends DataModule {
     }
 
     @Override
-    public DataProvider providesLocalDataProvider(WeatherApi weatherApi) {
+    public DataProvider providesLocalDataProvider(Application application, WeatherApi weatherApi, Gson gson) {
         return Mockito.mock(DataProvider.class);
-    }
-
-    @Override
-    public OkHttpClient providesOkHttpClient(HttpLoggingInterceptor logging) {
-        return Mockito.mock(OkHttpClient.class);
     }
 
     @Override

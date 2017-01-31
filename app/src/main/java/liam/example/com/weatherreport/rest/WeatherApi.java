@@ -8,7 +8,7 @@ import rx.Observable;
 @FunctionalInterface
 public interface WeatherApi {
 
-        @GET("data/2.5/forecast")
-        Observable<WeatherFeed> list(@Query("q") String city);
+    @GET("data/2.5/forecast")
+    Observable<WeatherFeed> list(@Query("lat") double lat, @Query("lon") double lon);
 
 }

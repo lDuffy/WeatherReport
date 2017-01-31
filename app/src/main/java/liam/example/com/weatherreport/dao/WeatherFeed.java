@@ -1,38 +1,21 @@
 package liam.example.com.weatherreport.dao;
 
 import java.io.Serializable;
-
-import org.parceler.Parcel;
-import org.parceler.ParcelConstructor;
-import org.parceler.ParcelPropertyConverter;
-
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.WeatherFeedRealmProxy;
-import io.realm.annotations.PrimaryKey;
-import liam.example.com.weatherreport.utils.RealmListParcelConverter;
+import java.util.List;
 /*
  * we only want one instance of weatherFeed to exist in the database so we set the id to 1l
  */
 
-@Parcel(implementations = { WeatherFeedRealmProxy.class }, value = Parcel.Serialization.FIELD, analyze = { WeatherFeed.class })
-public class WeatherFeed extends RealmObject implements Serializable {
+public class WeatherFeed implements Serializable {
 
-    @PrimaryKey
-    public long id = 1l;
     public String message;
     public String cnt;
     public String cod;
-    @ParcelPropertyConverter(RealmListParcelConverter.class)
-    public RealmList<WeatherListItem> list;
+    public List<WeatherListItem> list;
     public City city;
 
-    public WeatherFeed(RealmList<WeatherListItem> list) {
+    public WeatherFeed(List<WeatherListItem> list) {
         this.list = list;
-    }
-
-    @ParcelConstructor
-    public WeatherFeed() {
     }
 
     public String getMessage() {

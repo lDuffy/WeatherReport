@@ -1,6 +1,7 @@
 package liam.example.com.weatherreport;
 
 import android.app.Application;
+import android.location.Location;
 
 import javax.inject.Inject;
 
@@ -8,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import liam.example.com.weatherreport.components.DaggerTestActivityComponent;
@@ -59,7 +61,7 @@ public class MainPresenterTest {
     @Test
     public void testLoadWeatherFeedPopulateList() {
         envokeValidResponsefromDataRequest();
-        presenter.fetchDate();
+        presenter.fetchDate(Mockito.mock(Location.class));
         verify(mainView).populateList(anyList());
 
     }
@@ -67,13 +69,13 @@ public class MainPresenterTest {
     private void envokeValidResponsefromDataRequest() {
         WeatherFeed testFeed = getTestWeatherFeed();
         Observable<WeatherFeed> testObservable = Observable.just(testFeed);
-        doReturn(testObservable).when(dataProvider).loadWeatherFeed();
+        doReturn(testObservable).when(dataProvider).loadWeatherFeed(Mockito.mock(Location.class));
     }
 
     @Test
     public void testLoadWeatherFeedError() {
-        doReturn(Observable.error(new Throwable())).when(dataProvider).loadWeatherFeed();
-        presenter.fetchDate();
+        doReturn(Observable.error(new Throwable())).when(dataProvider).loadWeatherFeed(Mockito.mock(Location.class));
+        presenter.fetchDate(Mockito.mock(Location.class));
         verify(mainView).showToast("java.lang.Throwable");
 
     }
@@ -81,7 +83,7 @@ public class MainPresenterTest {
     @Test
     public void testLoadWeatherProgress() {
         envokeValidResponsefromDataRequest();
-        presenter.fetchDate();
+        presenter.fetchDate(Mockito.mock(Location.class));
         verify(mainView).setProgressVisible(true);
 
     }

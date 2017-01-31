@@ -1,6 +1,10 @@
 package liam.example.com.weatherreport.dagger.modules;
 
+import android.app.Application;
+
 import javax.inject.Singleton;
+
+import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;
@@ -8,12 +12,11 @@ import liam.example.com.weatherreport.BuildConfig;
 import liam.example.com.weatherreport.dagger.WeatherReport;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.data.DataProviderImpl;
+import liam.example.com.weatherreport.rest.WeatherApi;
 import liam.example.com.weatherreport.utils.RestServiceUtil;
 import liam.example.com.weatherreport.utils.RxUtils;
-import liam.example.com.weatherreport.rest.WeatherApi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -26,22 +29,11 @@ public class DataModule {
 
     @Provides
     @Singleton
-    HttpLoggingInterceptor providesHttpLoggingInterceptor() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        return logging;
-    }
-
-    @Provides
-    @Singleton
-    public OkHttpClient providesOkHttpClient(HttpLoggingInterceptor logging) {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-        httpClient.addInterceptor(logging);
-        httpClient.addInterceptor(chain -> {
+    public OkHttpClient providesOkHttpClient() {
+        return new OkHttpClient.Builder().addInterceptor(chain -> {
             Request request = RestServiceUtil.getRequestWithApiKey(chain);
             return chain.proceed(request);
-        });
-        return httpClient.build();
+        }).build();
     }
 
     @Provides
@@ -59,8 +51,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public DataProvider providesLocalDataProvider( WeatherApi weatherApi) {
-        return new DataProviderImpl( weatherApi);
+    public DataProvider providesLocalDataProvider(Application application, WeatherApi weatherApi, Gson gson) {
+        return new DataProviderImpl(application, weatherApi, gson);
     }
 
     @Provides
