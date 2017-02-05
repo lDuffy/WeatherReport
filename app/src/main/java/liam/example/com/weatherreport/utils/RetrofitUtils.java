@@ -39,7 +39,7 @@ public class RetrofitUtils {
                 .build();
     }
 
-    private static OkHttpClient provideOkHttpClient() {
+    public static OkHttpClient provideOkHttpClient() {
         return new OkHttpClient.Builder()
                 .addInterceptor(provideHttpLoggingInterceptor())
                 .addInterceptor(provideOfflineCacheInterceptor())

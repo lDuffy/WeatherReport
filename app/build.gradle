@@ -33,27 +33,38 @@ android {
 }
 
 dependencies {
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile 'org.mockito:mockito-all:1.10.19'
-    testCompile 'junit:junit:4.12'
+
     provided 'com.google.dagger:dagger-compiler:2.8'
     provided 'org.glassfish:javax.annotation:10.0-b28'
+
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
+
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
-    compile 'com.google.code.gson:gson:2.8.0'
+
     compile 'com.google.dagger:dagger:2.8'
     compile 'com.google.android.gms:play-services-location:10.0.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
+
+    compile 'com.squareup.okhttp3:logging-interceptor:3.5.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
+
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.5'
+
     compile 'joda-time:joda-time:2.9.7'
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile 'com.android.support:support-annotations:25.1.0'
+    androidTestCompile 'com.jakewharton.espresso:okhttp3-idling-resource:1.0.0'
+    androidTestCompile 'com.squareup.okhttp3:okhttp:3.5.0'
+
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'junit:junit:4.12'
+
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 }
