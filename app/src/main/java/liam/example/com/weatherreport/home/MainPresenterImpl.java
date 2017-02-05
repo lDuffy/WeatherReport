@@ -1,6 +1,7 @@
 package liam.example.com.weatherreport.home;
 
 import android.location.Location;
+import android.view.View;
 
 import java.util.List;
 
@@ -48,20 +49,19 @@ public class MainPresenterImpl implements MainContract.MainPresenter, LocationPr
     }
 
     private void fetchDate(Location location) {
-        mainView.setProgressVisible(true);
+        mainView.setProgressVisible(View.VISIBLE);
         subscription = weatherApi.loadWeatherFeed(location)
                 .compose(rxUtils.newIoToMainTransformer())
                 .subscribe(this::sortResultsAndPopulateList,
                         this::setError,
-                        () -> mainView.setProgressVisible(false));
+                        () -> mainView.setProgressVisible(View.GONE));
     }
 
     void sortResultsAndPopulateList(WeatherFeed result) {
         if (null != result) {
             List<Day> datesByDay = DateTimeUtils.getDaysFromFeed(result);
             if (null != mainView) {
-                mainView.populateList(datesByDay);
-
+                mainView.populateList(result.getList());
             }
         }
     }
@@ -69,7 +69,7 @@ public class MainPresenterImpl implements MainContract.MainPresenter, LocationPr
     void setError(Throwable throwable) {
         if (null != mainView) {
             mainView.showToast(throwable.toString());
-            mainView.setProgressVisible(false);
+            mainView.setProgressVisible(View.GONE);
         }
     }
 

@@ -1,11 +1,10 @@
 package liam.example.com.weatherreport.home;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -19,38 +18,45 @@ import liam.example.com.weatherreport.R;
 import liam.example.com.weatherreport.dao.WeatherListItem;
 import liam.example.com.weatherreport.utils.DateTimeUtils;
 
-public class ListViewAdapter extends ArrayAdapter<WeatherListItem> {
-    public ListViewAdapter(Context context, List<WeatherListItem> items) {
-        super(context, 0, items);
+public class ListViewAdapter extends RecyclerView.Adapter<ListViewAdapter.ListViewHolder> {
 
+    private final List<WeatherListItem> items;
+    private final Context context;
+    public ListViewAdapter(Context context, List<WeatherListItem> items) {
+       this.items=items;
+        this.context=context;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, View view, @NonNull ViewGroup parent) {
-        WeatherListItem weatherListItem = getItem(position);
+    public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
+        return new ListViewHolder(view);
+    }
 
-        ViewHolder holder;
-        if (null != view) {
-            holder = (ViewHolder) view.getTag();
-        } else {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
-            holder = new ViewHolder(view);
-            view.setTag(holder);
-        }
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
 
+
+
+    @Override
+    public void onBindViewHolder(ListViewHolder holder, int position) {
+        WeatherListItem weatherListItem = items.get(position);
         DateTime dateTime = new DateTime(Long.valueOf(weatherListItem.getDt() * DateTimeUtils.SECOND), DateTimeZone.UTC);
 
         holder.time.setText(DateTimeUtils.getTime(dateTime.toLocalDateTime()));
         holder.temp.setText(weatherListItem.getTempInCelcius());
-        return view;
+
     }
 
-    static class ViewHolder {
+    static class ListViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.time_of_day) TextView time;
         @BindView(R.id.temp) TextView temp;
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+
+        ListViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

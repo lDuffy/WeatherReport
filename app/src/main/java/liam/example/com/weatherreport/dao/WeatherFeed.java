@@ -30,7 +30,7 @@ public class WeatherFeed implements Serializable {
         return cod;
     }
 
-    public Iterable<WeatherListItem> getList() {
+    public List<WeatherListItem> getList() {
         return list;
     }
 

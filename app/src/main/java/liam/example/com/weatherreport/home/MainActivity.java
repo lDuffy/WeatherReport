@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -16,29 +19,26 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import com.viewpagerindicator.PageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import liam.example.com.weatherreport.R;
 import liam.example.com.weatherreport.base.WeatherReportApplication;
 import liam.example.com.weatherreport.dagger.components.ActivityComponent;
 import liam.example.com.weatherreport.dagger.components.DaggerActivityComponent;
 import liam.example.com.weatherreport.dagger.modules.ActivityModule;
-import liam.example.com.weatherreport.dao.Day;
+import liam.example.com.weatherreport.dao.WeatherListItem;
 
 import static liam.example.com.weatherreport.utils.LocationProvider.LOCATION_SETTING_REQUEST_CODE;
 
-public class MainActivity extends AppCompatActivity implements MainContract.MainView {
+public class MainActivity extends AppCompatActivity implements MainContract.MainView, AppBarLayout.OnOffsetChangedListener {
 
+    @BindView(R.id.swipeContainer) public SwipeRefreshLayout swipeRefreshLayout;
     @Inject MainContract.MainPresenter presenter;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.recyclerView) RecyclerView recyclerView;
     @BindView(R.id.progress) ProgressBar progressBar;
-    @BindView(R.id.refresh) ImageView refresh;
-    @BindView(R.id.viewpager) ViewPager viewPager;
-    DayPageAdapter pageAdapter;
+    @BindView(R.id.appbar) AppBarLayout appBarLayout;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    ListViewAdapter pageAdapter;
 
 
     @Override
@@ -51,11 +51,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     }
 
-    private void setPagerAdapter(List<Day> items) {
-        pageAdapter = new DayPageAdapter(getSupportFragmentManager(), items);
-        viewPager.setAdapter(pageAdapter);
-        PageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.titles);
-        titleIndicator.setViewPager(viewPager);
+    private void setRecycleView(List<WeatherListItem> items) {
+        pageAdapter = new ListViewAdapter(this, items);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(pageAdapter);
     }
 
     public ActivityComponent getComponent() {
@@ -69,12 +69,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     public void onStart() {
         super.onStart();
         presenter.onViewAttached(this);
+        swipeRefreshLayout.setOnRefreshListener(presenter::fetchDate);
+        appBarLayout.addOnOffsetChangedListener(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         presenter.onViewDetached();
+        appBarLayout.removeOnOffsetChangedListener(this);
+    }
+
+    private void stopRefreshing() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -83,20 +90,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     }
 
     @Override
-    public void populateList(List<Day> datesByDay) {
-        setPagerAdapter(datesByDay);
+    public void populateList(List<WeatherListItem> datesByDay) {
+        setRecycleView(datesByDay);
     }
 
     @Override
-    public void setProgressVisible(boolean visibility) {
-        progressBar.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        refresh.setVisibility(visibility ? View.GONE : View.VISIBLE);
+    public void setProgressVisible(int visibility) {
+        progressBar.setVisibility(visibility);
+        if (View.GONE == visibility) {
+            stopRefreshing();
+        }
 
-    }
-
-    @OnClick(R.id.refresh)
-    public void submit() {
-        presenter.fetchDate();
     }
 
     @Override
@@ -111,8 +115,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOCATION_SETTING_REQUEST_CODE) {
+        if (LOCATION_SETTING_REQUEST_CODE == requestCode) {
             presenter.fetchDate();
         }
     }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (0 == verticalOffset) {
+            swipeRefreshLayout.setEnabled(true);
+        } else {
+            swipeRefreshLayout.setEnabled(false);
+        }
+    }
 }
+
