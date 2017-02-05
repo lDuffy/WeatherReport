@@ -45,11 +45,12 @@ dependencies {
 
 
     compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.google.dagger:dagger:2.8'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.github.JakeWharton:ViewPagerIndicator:2.4.1'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.google.dagger:dagger:2.8'
     compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile "com.squareup.okhttp3:logging-interceptor:3.2.0"
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'

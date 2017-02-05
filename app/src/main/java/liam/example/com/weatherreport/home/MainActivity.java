@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -23,14 +24,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import liam.example.com.weatherreport.R;
-import liam.example.com.weatherreport.base.InjectedActivity;
+import liam.example.com.weatherreport.base.WeatherReportApplication;
 import liam.example.com.weatherreport.dagger.components.ActivityComponent;
 import liam.example.com.weatherreport.dagger.components.DaggerActivityComponent;
 import liam.example.com.weatherreport.dagger.modules.ActivityModule;
 import liam.example.com.weatherreport.dao.Day;
 import liam.example.com.weatherreport.utils.LocationProvider;
 
-public class MainActivity extends InjectedActivity<ActivityComponent> implements MainContract.MainView, LocationProvider.LocationCallback {
+public class MainActivity extends AppCompatActivity implements MainContract.MainView, LocationProvider.LocationCallback {
 
     @Inject MainContract.MainPresenter presenter;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -58,11 +59,10 @@ public class MainActivity extends InjectedActivity<ActivityComponent> implements
         titleIndicator.setViewPager(viewPager);
     }
 
-    @Override
     public ActivityComponent getComponent() {
         return DaggerActivityComponent.builder()
                 .activityModule(new ActivityModule(this))
-                .appComponent(getAppComponent())
+                .appComponent(WeatherReportApplication.getInstance().getAppComponent())
                 .build();
     }
 

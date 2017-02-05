@@ -1,25 +1,15 @@
 package liam.example.com.weatherreport.dagger.modules;
 
-import android.app.Application;
-
 import javax.inject.Singleton;
-
-import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;
-import liam.example.com.weatherreport.BuildConfig;
-import liam.example.com.weatherreport.dagger.WeatherReport;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.data.DataProviderImpl;
 import liam.example.com.weatherreport.rest.WeatherApi;
-import liam.example.com.weatherreport.utils.RestServiceUtil;
 import liam.example.com.weatherreport.utils.RxUtils;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static liam.example.com.weatherreport.utils.RetrofitUtils.provideRetrofit;
 
 /**
  * Module for rest api code
@@ -29,36 +19,14 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public OkHttpClient providesOkHttpClient() {
-        return new OkHttpClient.Builder().addInterceptor(chain -> {
-            Request request = RestServiceUtil.getRequestWithApiKey(chain);
-            return chain.proceed(request);
-        }).build();
+    public DataProvider providesLocalDataProvider(WeatherApi weatherApi) {
+        return new DataProviderImpl(weatherApi);
     }
 
     @Provides
     @Singleton
-    @WeatherReport
-    Retrofit providesRestAdapter(OkHttpClient httpClient) {
-        return new Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(httpClient)
-                .build();
-
-    }
-
-    @Provides
-    @Singleton
-    public DataProvider providesLocalDataProvider(Application application, WeatherApi weatherApi, Gson gson) {
-        return new DataProviderImpl(application, weatherApi, gson);
-    }
-
-    @Provides
-    @Singleton
-    public WeatherApi providesApi(@WeatherReport Retrofit restAdapter) {
-        return restAdapter.create(WeatherApi.class);
+    public WeatherApi providesApi() {
+        return provideRetrofit().create(WeatherApi.class);
     }
 
     @Provides
