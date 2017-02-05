@@ -8,38 +8,48 @@ import liam.example.com.weatherreport.dao.Day;
 import liam.example.com.weatherreport.dao.WeatherFeed;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.utils.DateTimeUtils;
+import liam.example.com.weatherreport.utils.LocationProvider;
 import liam.example.com.weatherreport.utils.RxUtils;
-import rx.subjects.PublishSubject;
+import rx.Subscription;
 
-public class MainPresenterImpl implements MainContract.MainPresenter {
+public class MainPresenterImpl implements MainContract.MainPresenter, LocationProvider.LocationCallback {
 
-    final PublishSubject<Boolean> onDestroySubject;
     final DataProvider weatherApi;
     final RxUtils rxUtils;
     MainContract.MainView mainView;
+    Subscription subscription;
+    private LocationProvider locationProvider;
 
     public MainPresenterImpl(DataProvider weatherApi, RxUtils rxUtils) {
         this.rxUtils = rxUtils;
         this.weatherApi = weatherApi;
-        onDestroySubject = PublishSubject.create();
+
     }
 
     @Override
     public void onViewAttached(MainContract.MainView mainView) {
         this.mainView = mainView;
+        locationProvider = new LocationProvider(mainView, this);
+        locationProvider.connect();
     }
 
     @Override
     public void onViewDetached() {
-        onDestroySubject.onNext(true);
+        locationProvider.disconnect();
+        if (!subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
         mainView = null;
     }
 
     @Override
-    public void fetchDate(Location location ) {
+    public void fetchDate() {
+        locationProvider.onConnected(null);
+    }
+
+    private void fetchDate(Location location) {
         mainView.setProgressVisible(true);
-        weatherApi.loadWeatherFeed(location)
-                .compose(rxUtils.newOnDestroyTransformer(onDestroySubject))
+        subscription = weatherApi.loadWeatherFeed(location)
                 .compose(rxUtils.newIoToMainTransformer())
                 .subscribe(this::sortResultsAndPopulateList,
                         this::setError,
@@ -61,6 +71,11 @@ public class MainPresenterImpl implements MainContract.MainPresenter {
             mainView.showToast(throwable.toString());
             mainView.setProgressVisible(false);
         }
+    }
+
+    @Override
+    public void handleNewLocation(Location location) {
+        fetchDate(location);
     }
 
 }
