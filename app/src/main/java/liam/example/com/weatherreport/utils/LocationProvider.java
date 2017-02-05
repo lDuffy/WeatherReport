@@ -2,20 +2,26 @@ package liam.example.com.weatherreport.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 
-import liam.example.com.weatherreport.home.MainActivity;
 import liam.example.com.weatherreport.home.MainContract;
 
 /**
@@ -28,7 +34,8 @@ public class LocationProvider implements
         LocationListener {
 
     public static final String TAG = LocationProvider.class.getSimpleName();
-    public static final int TEN_SECOND = 10000;
+    public static final int ONE_SECOND = 1000;
+    public static final int LOCATION_SETTING_REQUEST_CODE = 22;
     /*
      * Define a request code to send to Google Play services
      * This code is returned in Activity.onActivityResult
@@ -40,7 +47,7 @@ public class LocationProvider implements
     private Activity activity;
 
     public LocationProvider(MainContract.MainView context, LocationCallback callback) {
-        googleApiClient = new GoogleApiClient.Builder((MainActivity)context)
+        googleApiClient = new GoogleApiClient.Builder((Context) context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -51,10 +58,10 @@ public class LocationProvider implements
         // Create the LocationRequest object
         locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(TEN_SECOND)        // 10 seconds, in milliseconds
-                .setFastestInterval(1000); // 1 second, in milliseconds
+                .setInterval(ONE_SECOND)        // 10 seconds, in milliseconds
+                .setFastestInterval(100); // 1 second, in milliseconds
 
-        activity = (MainActivity)context;
+        activity = (Activity) context;
     }
 
     public void connect() {
@@ -73,14 +80,11 @@ public class LocationProvider implements
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "Location services connected.");
         if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            ActivityCompat.requestPermissions(activity
-                    ,
-                    new String[] { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION },
-                    1);
+            ActivityCompat.requestPermissions(activity, new String[] { Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION }, 1);
         } else {
             Location location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
             if (null == location) {
-                LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+                requestLocationSettingsChange();
             } else {
                 locationCallback.handleNewLocation(location);
             }
@@ -88,13 +92,47 @@ public class LocationProvider implements
 
     }
 
-    @Override
-    public void onConnectionSuspended(int i) {
+    private void requestLocationSettingsChange() {
 
+        LocationSettingsRequest.Builder locationSettingsRequest = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+
+        PendingResult<LocationSettingsResult> locationSettingsResult = LocationServices.SettingsApi.checkLocationSettings(googleApiClient,
+                locationSettingsRequest.build());
+
+        locationSettingsResult.setResultCallback(result -> {
+            Status status = result.getStatus();
+            if (LocationSettingsStatusCodes.SUCCESS == status.getStatusCode()) {
+                requestLocationUpdate();
+            } else if (LocationSettingsStatusCodes.RESOLUTION_REQUIRED == status.getStatusCode()) {
+                launchChangeSettingsRequestDialog(status);
+            } else if (LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE == status.getStatusCode()) {
+                locationCallback.handleLocationError(new Throwable("location settings change error"));
+            }
+        });
+    }
+
+    private void launchChangeSettingsRequestDialog(Status status) {
+        try {
+            status.startResolutionForResult(activity, LOCATION_SETTING_REQUEST_CODE);
+        } catch (IntentSender.SendIntentException e) {
+            locationCallback.handleLocationError(e);
+        }
+    }
+
+    private void requestLocationUpdate() {
+        if (PackageManager.PERMISSION_GRANTED == ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
+        }
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "onConnectionSuspended: ");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         /*
          * Google Play services can resolve some errors it detects.
          * If the error has a resolution, try sending an Intent to
@@ -109,25 +147,22 @@ public class LocationProvider implements
              * PendingIntent
              */
             } catch (IntentSender.SendIntentException e) {
-                // Log the error
-                Log.e(TAG, e.getMessage());
+                locationCallback.handleLocationError(e);
             }
         } else {
-            /*
-             * If no resolution is available, display a dialog to the
-             * user with the error.
-             */
-            Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
+            locationCallback.handleLocationError(new Throwable("Location services connection failed with code " + connectionResult.getErrorCode()));
         }
     }
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d(TAG, "onLocationChanged: ");
         locationCallback.handleNewLocation(location);
     }
 
-    @FunctionalInterface
     public interface LocationCallback {
         void handleNewLocation(Location location);
+
+        void handleLocationError(Throwable error);
     }
 }

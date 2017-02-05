@@ -36,7 +36,7 @@ public class MainPresenterImpl implements MainContract.MainPresenter, LocationPr
     @Override
     public void onViewDetached() {
         locationProvider.disconnect();
-        if (!subscription.isUnsubscribed()) {
+        if ((null != subscription) && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
         mainView = null;
@@ -76,6 +76,11 @@ public class MainPresenterImpl implements MainContract.MainPresenter, LocationPr
     @Override
     public void handleNewLocation(Location location) {
         fetchDate(location);
+    }
+
+    @Override
+    public void handleLocationError(Throwable error) {
+        setError(error);
     }
 
 }

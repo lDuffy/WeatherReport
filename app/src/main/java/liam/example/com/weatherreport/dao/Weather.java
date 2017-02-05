@@ -1,6 +1,8 @@
 package liam.example.com.weatherreport.dao;
 
-public class Weather{
+import java.io.Serializable;
+
+public class Weather implements Serializable{
 
     private String description;
     private String icon;

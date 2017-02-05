@@ -1,8 +1,10 @@
 package liam.example.com.weatherreport.dao;
 
+import java.io.Serializable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Main{
+public class Main implements Serializable{
 
     public static final double KELVIN_TO_CELSIUS_SUBTRACT = 273.15;
     public double pressure;

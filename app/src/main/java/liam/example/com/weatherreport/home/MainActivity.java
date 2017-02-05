@@ -1,12 +1,12 @@
 package liam.example.com.weatherreport.home;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -28,6 +28,8 @@ import liam.example.com.weatherreport.dagger.components.ActivityComponent;
 import liam.example.com.weatherreport.dagger.components.DaggerActivityComponent;
 import liam.example.com.weatherreport.dagger.modules.ActivityModule;
 import liam.example.com.weatherreport.dao.Day;
+
+import static liam.example.com.weatherreport.utils.LocationProvider.LOCATION_SETTING_REQUEST_CODE;
 
 public class MainActivity extends AppCompatActivity implements MainContract.MainView {
 
@@ -82,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     @Override
     public void populateList(List<Day> datesByDay) {
-        Log.d("populateList", "populateList: ");
         setPagerAdapter(datesByDay);
     }
 
@@ -107,4 +108,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOCATION_SETTING_REQUEST_CODE) {
+            presenter.fetchDate();
+        }
+    }
 }
