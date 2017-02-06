@@ -1,12 +1,12 @@
 package liam.example.com.weatherreport.dagger.modules;
 
-import android.app.Application;
 import android.content.Context;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import liam.example.com.weatherreport.base.WeatherReportApplication;
 
 /**
  * Dependancy injection module for providing application wide objects
@@ -14,15 +14,15 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-    private Application application;
+    private WeatherReportApplication application;
 
-    public AppModule(Application application) {
+    public AppModule(WeatherReportApplication application) {
         this.application = application;
     }
 
     @Provides
     @Singleton
-    public Application providesApplication() {
+    public WeatherReportApplication providesApplication() {
         return application;
     }
 

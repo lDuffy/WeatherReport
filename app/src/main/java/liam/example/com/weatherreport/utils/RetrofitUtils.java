@@ -30,9 +30,9 @@ public class RetrofitUtils {
     private static final Integer RETRY_COUNT = 3;
     private static final Integer EXPONENT_POWER = 2;
 
-    public static Retrofit provideRetrofit() {
+    public static Retrofit provideRetrofit(final WeatherReportApplication application) {
         return new Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
+                .baseUrl(application.getBaseUrl())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(provideOkHttpClient())

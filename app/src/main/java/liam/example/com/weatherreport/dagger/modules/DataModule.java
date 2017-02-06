@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import liam.example.com.weatherreport.base.WeatherReportApplication;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.data.DataProviderImpl;
 import liam.example.com.weatherreport.rest.WeatherApi;
@@ -25,8 +26,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    public WeatherApi providesApi() {
-        return provideRetrofit().create(WeatherApi.class);
+    public WeatherApi providesApi(WeatherReportApplication application) {
+        return provideRetrofit(application).create(WeatherApi.class);
     }
 
     @Provides

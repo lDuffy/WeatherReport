@@ -9,6 +9,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 
 public class RecyclerViewPopulatedAssertion implements ViewAssertion {
+    final int size;
+
+    public RecyclerViewPopulatedAssertion(int size) {
+        this.size = size;
+    }
 
     @Override
     public void check(View view, NoMatchingViewException noViewFoundException) {
@@ -18,6 +23,6 @@ public class RecyclerViewPopulatedAssertion implements ViewAssertion {
 
         RecyclerView recyclerView = (RecyclerView) view;
         RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        assertThat(adapter.getItemCount(), greaterThan(0));
+        assertThat(adapter.getItemCount(), greaterThan(size));
     }
 }

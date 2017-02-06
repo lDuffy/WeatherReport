@@ -5,13 +5,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import liam.example.com.weatherreport.BuildConfig;
 import liam.example.com.weatherreport.dagger.components.AppComponent;
 import liam.example.com.weatherreport.dagger.components.DaggerAppComponent;
+import liam.example.com.weatherreport.dagger.modules.AppModule;
 import liam.example.com.weatherreport.dagger.modules.DataModule;
 
 
 public class WeatherReportApplication extends Application {
-
 
     private static WeatherReportApplication instance;
 
@@ -25,7 +26,7 @@ public class WeatherReportApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        appComponent = DaggerAppComponent.builder().dataModule(new DataModule()).build();
+        appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).dataModule(new DataModule()).build();
     }
 
     public AppComponent getAppComponent() {
@@ -40,5 +41,9 @@ public class WeatherReportApplication extends Application {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return (null != networkInfo) && networkInfo.isConnected();
+    }
+
+    public String getBaseUrl() {
+        return BuildConfig.BASE_URL;
     }
 }
