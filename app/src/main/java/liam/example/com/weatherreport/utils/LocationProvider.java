@@ -2,7 +2,6 @@ package liam.example.com.weatherreport.utils;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -40,20 +39,13 @@ public class LocationProvider implements
      * Define a request code to send to Google Play services
      * This code is returned in Activity.onActivityResult
      */
-    private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private static final int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationCallback locationCallback;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Activity activity;
 
-    public LocationProvider(MainContract.MainView context, LocationCallback callback) {
-        googleApiClient = new GoogleApiClient.Builder((Context) context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        locationCallback = callback;
+    public LocationProvider(MainContract.MainView context) {
 
         // Create the LocationRequest object
         locationRequest = LocationRequest.create()
@@ -64,7 +56,14 @@ public class LocationProvider implements
         activity = (Activity) context;
     }
 
-    public void connect() {
+    public void connect(LocationCallback callback) {
+        locationCallback = callback;
+        googleApiClient = new GoogleApiClient.Builder(activity)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
         googleApiClient.connect();
     }
 
@@ -73,6 +72,7 @@ public class LocationProvider implements
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
             googleApiClient.disconnect();
         }
+        locationCallback = null;
         activity = null;
     }
 

@@ -1,7 +1,5 @@
 package liam.example.com.weatherreport.dagger.modules;
 
-import android.content.Context;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -23,12 +21,6 @@ public class AppModule {
     @Provides
     @Singleton
     public WeatherReportApplication providesApplication() {
-        return application;
-    }
-
-    @Provides
-    @Singleton
-    public Context providesContext() {
         return application;
     }
 

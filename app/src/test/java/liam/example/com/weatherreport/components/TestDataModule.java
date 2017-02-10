@@ -1,17 +1,12 @@
 package liam.example.com.weatherreport.components;
 
-import android.app.Application;
-
 import org.mockito.Mockito;
 
-import com.google.gson.Gson;
-
-import liam.example.com.weatherreport.dagger.WeatherReport;
+import liam.example.com.weatherreport.base.WeatherReportApplication;
 import liam.example.com.weatherreport.dagger.modules.DataModule;
 import liam.example.com.weatherreport.data.DataProvider;
 import liam.example.com.weatherreport.rest.WeatherApi;
 import liam.example.com.weatherreport.utils.RxUtils;
-import retrofit2.Retrofit;
 
 /*
  * Module extending DataModule that returns Mock implementations of classes for testing.
@@ -19,12 +14,12 @@ import retrofit2.Retrofit;
 public class TestDataModule extends DataModule {
 
     @Override
-    public WeatherApi providesApi(@WeatherReport Retrofit restAdapter) {
+    public WeatherApi providesApi(WeatherReportApplication application) {
         return Mockito.mock(WeatherApi.class);
     }
 
     @Override
-    public DataProvider providesLocalDataProvider(Application application, WeatherApi weatherApi, Gson gson) {
+    public DataProvider providesLocalDataProvider(WeatherApi weatherApi) {
         return Mockito.mock(DataProvider.class);
     }
 

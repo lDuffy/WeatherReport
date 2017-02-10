@@ -21,17 +21,17 @@ public class MainPresenterImpl implements MainContract.MainPresenter, LocationPr
     Subscription subscription;
     private LocationProvider locationProvider;
 
-    public MainPresenterImpl(DataProvider weatherApi, RxUtils rxUtils) {
-        this.rxUtils = rxUtils;
+    public MainPresenterImpl(DataProvider weatherApi, RxUtils rxUtils, LocationProvider locationProvider) {
+        this.locationProvider=locationProvider;
         this.weatherApi = weatherApi;
+        this.rxUtils = rxUtils;
 
     }
 
     @Override
     public void onViewAttached(MainContract.MainView mainView) {
         this.mainView = mainView;
-        locationProvider = new LocationProvider(mainView, this);
-        locationProvider.connect();
+        locationProvider.connect(this);
     }
 
     @Override
